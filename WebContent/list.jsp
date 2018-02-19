@@ -12,19 +12,31 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
 <link type="text/css" href="/memberboard/css/list2.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
 <title>Insert title here</title>
 </head>
 <%
+//페이지처리
+int pageSize = 5;
+String pageNum = request.getParameter("pageNum");
+if(pageNum==null || pageNum==""){
+	pageNum="1"; }
+int currentPage = Integer.parseInt(pageNum);
+int startRow = (currentPage-1) * pageSize;
+int endRow = currentPage * pageSize;
+
 memDAO dao = memDAO.getInstance();
 int count = 0;
 List memList = null;
 count = dao.SelectCountMem();
 if(count>0){
-	memList = dao.memList();
+	memList = dao.memList(startRow, endRow);
 }
+
+
 %>
 <body>
 <div class="container" style="margin-top: 30px;">
@@ -77,5 +89,26 @@ if(count>0){
 		</tr><%} %>
 		<%} %>
 	</table>
+	
+	<div class="w3-center" style="margin-top: 20px;">
+	<%int bottomLine=3;
+	if(count>0){int pageCount=count/pageSize+(count%pageSize==0?0:1);
+	int startPage = 1+(currentPage-1)/bottomLine*bottomLine;
+	int endPage = startPage+bottomLine-1;
+	if(endPage>pageCount) endPage=pageCount;
+	if(startPage>bottomLine){	%>
+	<a href="list.jsp?pageNum=<%=startPage-bottomLine %>">[이전]</a>
+	<%} %>
+	<%for (int i=startPage; i<=endPage; i++){ %>
+	<a href="list.jsp?pageNum=<%=i%>"><%
+		if(i!=currentPage) out.print("["+i+"]");
+		else out.print("<font color='red'>["+i+"]</font>");	%></a>
+	<%}
+		if(endPage<pageCount){ %>
+		<a href="list.jsp?pageNum=<%=startPage+bottomLine%>">[다음]</a>
+		<%}	} %>
+	
+		
+	</div>
 </body>
 </html>

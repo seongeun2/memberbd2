@@ -4,6 +4,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <%
+String pageNum = request.getParameter("pageNum");
+if(pageNum==null || pageNum=="1"){
+	pageNum = "1";
+}
+
 int num = Integer.parseInt(request.getParameter("num")); //deleteForm 에서 넘어온 데이터
 String passwd = request.getParameter("m_pwd");
 memDAO dao = memDAO.getInstance();

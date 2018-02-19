@@ -4,6 +4,11 @@
     pageEncoding="EUC-KR"%>
 <%request.setCharacterEncoding("euc-kr"); %>
 <%
+	String pageNum = request.getParameter("pageNum");
+	if(pageNum==null || pageNum=="1"){
+		pageNum = "1";
+	}
+
 	int num = Integer.parseInt(request.getParameter("num"));
 	try{
 		memDAO dao = memDAO.getInstance();

@@ -15,9 +15,13 @@
 </jsp:useBean>
 
 <%
+	String pageNum = request.getParameter("pageNum");
+	if(pageNum==null || pageNum=="1"){
+		pageNum = "1";
+	}
+	
 	memDAO dao = memDAO.getInstance();
 	dao.insert(member);
-	
 	
 	response.sendRedirect("/memberboard/list.jsp");
 %>

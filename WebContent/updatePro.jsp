@@ -14,6 +14,11 @@
 	<jsp:setProperty name="member" property="*"/>
 </jsp:useBean>
 <%
+	String pageNum = request.getParameter("pageNum");
+	if(pageNum==null || pageNum=="1"){
+		pageNum = "1";
+	}
+
 	memDAO dao = memDAO.getInstance();
 	int pwdcheck = dao.updateMember(member);
 %>

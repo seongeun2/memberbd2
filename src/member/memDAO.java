@@ -84,7 +84,7 @@ public class memDAO {
 	}
 	
 	//회원목록 (List)
-	public List memList() {
+	public List memList(int startRow, int endRow) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -92,9 +92,15 @@ public class memDAO {
 		String sql="";
 		try {
 			conn = getConnection();
-			sql = "select m_num, m_id, m_name, m_birth, m_reg_date, m_level from memberbd "
-					+ "order by m_reg_date desc";
+			/*sql = "select m_num, m_id, m_name, m_birth, m_reg_date, m_level from memberbd "
+					+ "order by m_reg_date desc";*/
+			sql = "select * from (select rownum rnum ,a.* "+
+				  "from (select m_num, m_id, m_name, m_birth, m_reg_date, m_level " + 
+				  "from memberbd order by m_reg_date desc) a ) " +
+				  "where rnum between ? and ? ";
 			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, startRow);
+			pstmt.setInt(2, endRow);
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) {
